@@ -1,4 +1,3 @@
-
 // This is a mock Firebase service that simulates the functionality for the prototype
 // In a real implementation, this would be replaced with actual Firebase SDK calls
 
@@ -45,7 +44,14 @@ export const signUpWithEmailAndPassword = async (email: string, password: string
 };
 
 export const signInWithGoogle = async () => {
-  // Simulate API delay
+  // First, simulate opening a popup window for Google authentication
+  const confirmAuth = window.confirm("This would normally open Google's authentication page. Click OK to simulate successful authentication with Google.");
+  
+  if (!confirmAuth) {
+    throw new Error("Google authentication was cancelled by user");
+  }
+  
+  // Simulate API delay for the authentication process
   await new Promise(resolve => setTimeout(resolve, 1200));
   
   // Simulate successful Google login
@@ -62,7 +68,14 @@ export const signInWithGoogle = async () => {
 };
 
 export const signInWithApple = async () => {
-  // Simulate API delay
+  // First, simulate opening a popup window for Apple authentication
+  const confirmAuth = window.confirm("This would normally open Apple's authentication page. Click OK to simulate successful authentication with Apple.");
+  
+  if (!confirmAuth) {
+    throw new Error("Apple authentication was cancelled by user");
+  }
+  
+  // Simulate API delay for the authentication process
   await new Promise(resolve => setTimeout(resolve, 1200));
   
   // Simulate successful Apple login

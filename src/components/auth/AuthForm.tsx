@@ -44,14 +44,16 @@ const AuthForm = () => {
       }
     } catch (error) {
       console.error("Authentication error:", error);
+      setIsLoading(false);
       toast({
         title: "Authentication Failed",
-        description: "Could not connect to " + provider + ". Please try again.",
+        description: error instanceof Error ? error.message : "Could not connect to " + provider + ". Please try again.",
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
+      return; // Exit early on error
     }
+    
+    setIsLoading(false);
   };
 
   return (
