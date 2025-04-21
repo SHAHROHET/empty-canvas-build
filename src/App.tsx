@@ -12,6 +12,7 @@ import DonorMap from "./pages/DonorMap";
 import MyRequests from "./pages/MyRequests";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import MyDonations from "./pages/MyDonations";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/donor-map" element={<DonorMap />} />
           <Route path="/my-requests" element={<MyRequests />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/my-donations" element={<MyDonations />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

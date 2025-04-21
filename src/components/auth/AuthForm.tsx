@@ -3,29 +3,55 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { signInWithGoogle, signInWithApple } from '@/services/firebase';
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleSocialLogin = (provider: string) => {
+  const handleSocialLogin = async (provider: string) => {
     setIsLoading(true);
     toast({
       title: "Connecting to " + provider,
       description: "Please wait...",
     });
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Use the actual Firebase authentication methods instead of simulations
+      if (provider === 'Google') {
+        await signInWithGoogle();
+      } else if (provider === 'Apple') {
+        await signInWithApple();
+      }
+      
       toast({
         title: "Success",
         description: "You are logged in with " + provider,
       });
 
-      // Navigate to home/profile-setup after login
-      window.location.href = "/profile-setup";
-    }, 2000);
+      // Check if user profile is complete
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        // If profile is not complete, redirect to profile setup
+        if (!user.profileComplete) {
+          navigate('/profile-setup');
+        } else {
+          navigate('/home');
+        }
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
+      toast({
+        title: "Authentication Failed",
+        description: "Could not connect to " + provider + ". Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
